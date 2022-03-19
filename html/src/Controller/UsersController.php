@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+
+use Cake\Auth\DefaultPasswordHasher;
+use Cake\Event\EventInterface;
 /**
  * Users Controller
  *
@@ -11,6 +14,83 @@ namespace App\Controller;
  */
 class UsersController extends AppController
 {
+
+    public function initialize():void
+    {
+        parent::initialize();
+        //レイアウトの指定
+        $this-> viewBuilder()->setlayout('user');
+        //各種コンポーネントのロード
+        $this->loadComponent('RequestHandler');
+        $this->loadComponent('Flash');
+        $this->loadComponent('Auth', [
+            'authorize' => ['Controller'],
+            'authenticate' => [
+                'Form' => [
+                    'fields' => [
+                        'username' => 'email',
+                        'password' => 'password'
+                    ]
+                ]
+            ],
+            'loginRedirect' => [
+                'controller' => 'Users',
+                'action' => 'login'
+            ],
+            'logoutRedirect' => [
+                'controller' => 'Users',
+                'action' => 'logout'
+            ],
+            'autherror' => 'ログインしてください'
+        ]);
+    }
+
+    //ログイン処理
+    function login()
+    {
+        //Post時の処理
+        if ($this->request->is('post')) {
+            $user = $this->Auth->identify();
+            //Authのidentifyをユーザーに設定
+            if (!empty($user)) {
+                $this->Auth->setUser($user);
+                return $this->redirect($this->Auth->redirectUrl());
+            }
+            $this->Flash->error('メールアドレスかパスワードが間違っています');
+        }
+    }
+
+    //ログアウト処理
+    public function logout()
+    {
+        //セッションを破棄
+        $this->request->session()->destroy();
+        return $this->redirect($this->Auth->logout());
+    }
+
+    //認証ページを使わないページの設定
+    public function beforeFilter(EventInterface $event)
+    {
+        parent::beforeFilter($event);
+        $this->Auth->allow(['login','index']);
+    }
+
+    //認証時のロールチェック
+    public function isAuthorized($user = null)
+    {
+        //管理者はtrue
+        if ($user['role'] === 1) {
+            return true;
+        }
+
+        //一般ユーザーはfalse
+        if ($user['role'] === 0) {
+            return true;
+        }
+
+        //他は全てfalse
+        return false;
+    }
     /**
      * Index method
      *
@@ -50,7 +130,7 @@ class UsersController extends AppController
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
-                $this->Flash->success(__('The user has been saved.'));
+                $this->Flash->success(__('登録しました'));
 
                 return $this->redirect(['action' => 'index']);
             }

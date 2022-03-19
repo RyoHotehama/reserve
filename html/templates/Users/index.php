@@ -4,13 +4,15 @@
  * @var \App\Model\Entity\User[]|\Cake\Collection\CollectionInterface $users
  */
 ?>
-<div class="users index content">
-    <?= $this->Html->link(__('New User'), ['action' => 'add'], ['class' => 'button float-right']) ?>
-    <h3><?= __('Users') ?></h3>
+<div class="main">
+    <div class="d-flex mt-5">
+        <h3 class="w-50"><?= __('登録者一覧') ?></h3>
+        <?= $this->Html->link(__('新規登録'), ['action' => 'add'], ['class' => 'link-danger w-50 user h4']) ?>
+    </div>
     <div class="table-responsive">
-        <table>
+        <table class="table table-hover">
             <thead>
-                <tr>
+                <tr class="table-info">
                     <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('name') ?></th>
                     <th><?= $this->Paginator->sort('email') ?></th>
@@ -39,14 +41,14 @@
             </tbody>
         </table>
     </div>
-    <div class="paginator">
+    <div class="paginator mt-3">
         <ul class="pagination">
             <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
+            <?= $this->Paginator->prev('< ' . __('前へ')) ?>
             <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
+            <?= $this->Paginator->next(__('次へ') . ' >') ?>
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
-        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
+        <!-- <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p> -->
     </div>
 </div>
