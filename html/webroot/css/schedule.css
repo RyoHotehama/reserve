@@ -22,3 +22,12 @@ th:nth-of-type(1), td:nth-of-type(1) {
 th:nth-of-type(7), td:nth-of-type(7) {
   color: blue;
 }
+
+.view {
+  margin: 0 auto;
+  width: 50%;
+}
+
+dl {
+  border: solid 1px gray;
+}
