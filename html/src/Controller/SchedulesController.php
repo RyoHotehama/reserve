@@ -11,6 +11,12 @@ namespace App\Controller;
  */
 class SchedulesController extends AppController
 {
+    public function initialize():void
+    {
+        parent::initialize();
+        //レイアウトの指定
+        $this-> viewBuilder()->setlayout('schedule');
+    }
     /**
      * Index method
      *
@@ -18,12 +24,81 @@ class SchedulesController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Users', 'Reserves'],
-        ];
-        $schedules = $this->paginate($this->Schedules);
+        //タイムゾーンを設定
+        date_default_timezone_set('Asia/Tokyo');
 
-        $this->set(compact('schedules'));
+        //前月・次月リンクが押された場合は、GETパラメータから年月を取得
+        if (isset($_GET['ym'])) {
+            $ym = $_GET['ym'];
+        } else {
+            //今年の年月を表示
+            $ym = date('Y-m');
+        }
+
+        // タイムスタンプを作成し、フォーマットをチェックする
+        $timestamp = strtotime($ym . '-01');
+        if ($timestamp === false) {
+            $ym = date('Y-m');
+            $timestamp = strtotime($ym . '-01');
+        }
+
+        // 今日の日付 フォーマット　例）2021-06-3
+        $today = date('Y-m-j');
+
+        // カレンダーのタイトルを作成　例）2021年6月
+        $html_title = date('Y年n月', $timestamp);
+
+        // 前月・次月の年月を取得
+        $prev = date('Y-m', strtotime('-1 month', $timestamp));
+        $next = date('Y-m', strtotime('+1 month', $timestamp));
+
+        // 該当月の日数を取得
+        $day_count = date('t', $timestamp);
+
+        // １日が何曜日か　0:日 1:月 2:火 ... 6:土
+        $youbi = (int) date('w', $timestamp);
+        // カレンダー作成の準備
+        $weeks = [];
+        $week = '';
+
+        // 第１週目：空のセルを追加
+        // 例）１日が火曜日だった場合、日・月曜日の２つ分の空セルを追加する
+        $week .= str_repeat('<td></td>', $youbi);
+        for ( $day = 1; $day <= $day_count; $day++, $youbi++) {
+
+            // 2021-06-3
+            $date = $ym . '-' . $day;
+        
+            if ($today == $date) {
+                // 今日の日付の場合は、class="today"をつける
+                $week .= '<td class="today"><a href="view/?id='.$ym . '-' .$day.'">' . $day;
+            } else {
+                $week .= '<td><a href="view/?id='.$ym . '-' .$day.'">' . $day;
+            }
+            $week .= '</a></td>';
+            // 週終わり、または、月終わりの場合
+            if ($youbi % 7 == 6 || $day == $day_count) {
+        
+                if ($day == $day_count) {
+                    // 月の最終日の場合、空セルを追加
+                    // 例）最終日が水曜日の場合、木・金・土曜日の空セルを追加
+                    $week .= str_repeat('<td></td>', 6 - $youbi % 7);
+                }
+                // weeks配列にtrと$weekを追加する
+                $weeks[] = '<tr>' . $week . '</tr>';
+                // weekをリセット
+                $week = '';
+            }
+        }
+
+        $this->set(compact('prev', 'html_title', 'next', 'weeks'));
+
+        // $this->paginate = [
+        //     'contain' => ['Users', 'Reserves'],
+        // ];
+        // $schedules = $this->paginate($this->Schedules);
+
+        // $this->set(compact('schedules'));
     }
 
     /**
@@ -33,13 +108,13 @@ class SchedulesController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view()
     {
-        $schedule = $this->Schedules->get($id, [
-            'contain' => ['Users', 'Reserves'],
-        ]);
+        // $schedule = $this->Schedules->get($id, [
+        //     'contain' => ['Users', 'Reserves'],
+        // ]);
 
-        $this->set(compact('schedule'));
+        // $this->set(compact('schedule'));
     }
 
     /**
