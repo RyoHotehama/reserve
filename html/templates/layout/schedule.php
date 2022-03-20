@@ -8,12 +8,16 @@
 
     <?= $this->Html->css('bootstrap.css') ?>
     <?= $this->Html->css('schedule.css') ?>
+    <?= $this->Html->css('base.css') ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
   </head>
   <body>
+    <header class="mb-3">
+      <?= $this->element('common/header'); ?>
+    </header>
     <div class="w-75 mx-auto">
       <?= $this->fetch('content') ?>
     </div>

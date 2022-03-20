@@ -3,19 +3,22 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use APP\Controller\AppController;
 /**
  * Schedules Controller
  *
  * @property \App\Model\Table\SchedulesTable $Schedules
  * @method \App\Model\Entity\Schedule[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-class SchedulesController extends AppController
+class SchedulesController extends BaseController
 {
     public function initialize():void
     {
         parent::initialize();
         //レイアウトの指定
         $this-> viewBuilder()->setlayout('schedule');
+        //ユーザーの登録
+        $this->set('authuser', $this->Auth->user());
     }
     /**
      * Index method

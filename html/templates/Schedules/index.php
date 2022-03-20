@@ -6,11 +6,14 @@
 ?>
 
 <div class="container">
-    <h3 class="mb-5">
+    <h3 class="mb-4">
         <a href="?ym=<?= $prev; ?>">&lt;</a>
         <?= $html_title; ?>
         <a href="?ym=<?= $next; ?>"> &gt;</a>
     </h3>
+    <h4>
+        ようこそ<?= $authuser['name'] ?> さん
+    </h4>
     <table class="table table-bordered">
         <tr>
             <th>日</th>

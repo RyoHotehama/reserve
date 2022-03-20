@@ -35,13 +35,13 @@ class UsersController extends AppController
             ],
             'loginRedirect' => [
                 'controller' => 'Users',
-                'action' => 'login'
+                'action' => 'index'
             ],
             'logoutRedirect' => [
                 'controller' => 'Users',
-                'action' => 'logout'
+                'action' => 'login'
             ],
-            'autherror' => 'ログインしてください'
+            'authError' => 'ログインしてください'
         ]);
     }
 
@@ -54,7 +54,7 @@ class UsersController extends AppController
             //Authのidentifyをユーザーに設定
             if (!empty($user)) {
                 $this->Auth->setUser($user);
-                return $this->redirect($this->Auth->redirectUrl());
+                return $this->redirect($this->Auth->redirectUrl('/schedules/'));
             }
             $this->Flash->error('メールアドレスかパスワードが間違っています');
         }
@@ -72,7 +72,7 @@ class UsersController extends AppController
     public function beforeFilter(EventInterface $event)
     {
         parent::beforeFilter($event);
-        $this->Auth->allow(['login','index']);
+        $this->Auth->allow(['login']);
     }
 
     //認証時のロールチェック
@@ -85,12 +85,13 @@ class UsersController extends AppController
 
         //一般ユーザーはfalse
         if ($user['role'] === 0) {
-            return true;
+            return false;
         }
 
         //他は全てfalse
         return false;
     }
+    
     /**
      * Index method
      *
