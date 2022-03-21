@@ -74,9 +74,9 @@ class SchedulesController extends BaseController
         
             if ($today == $date) {
                 // 今日の日付の場合は、class="today"をつける
-                $week .= '<td class="today"><a href="/schedules/view/?id='.$ym . '-' .$day.'">' . $day;
+                $week .= '<td class="today"><a href="/schedules/view/?id='.$date.'">' . $day;
             } else {
-                $week .= '<td><a href="/schedules/view/?id='.$ym . '-' .$day.'">' . $day;
+                $week .= '<td><a href="/schedules/view/?id='.$date.'">' . $day;
             }
             $week .= '</a></td>';
             // 週終わり、または、月終わりの場合
@@ -117,13 +117,17 @@ class SchedulesController extends BaseController
         $data = $this->request->getQuery('id');
         //Y年n月j日に変換
         $date = date("Y年n月j日", strtotime($data));
-        
-        $this->set(compact('date'));
-        // $schedule = $this->Schedules->get($id, [
-        //     'contain' => ['Users', 'Reserves'],
-        // ]);
+        //日付をY-m-d H:i:sに変換
+        $data = date("Y-m-d H:i:s", strtotime($data));
+        //次の日の日付を取得
+        $tomorrow = date("Y-m-d H:i:s", strtotime($data .'+1 day'));
 
-        // $this->set(compact('schedule'));
+        //予定を取得
+        $schedules = $this->Schedules->find('all', ['conditions' => ['user_id' => $this->Auth->user('id'), 'schedule_date >=' => $data,'schedule_date <=' => $tomorrow]]);
+
+        //取得した予定と日付をセット
+        $this->set('schedules', $schedules->toArray());
+        $this->set(compact('date'));
     }
 
     /**
@@ -133,19 +137,22 @@ class SchedulesController extends BaseController
      */
     public function add()
     {
+        date_default_timezone_set('Asia/Tokyo');
         $schedule = $this->Schedules->newEmptyEntity();
         if ($this->request->is('post')) {
-            $schedule = $this->Schedules->patchEntity($schedule, $this->request->getData());
+            $schedule = $this->Schedules->patchEntity($schedule, $this->request->getData(),);
+            $schedule->user_id = $this->Auth->user('id');
             if ($this->Schedules->save($schedule)) {
-                $this->Flash->success(__('The schedule has been saved.'));
+                $this->Flash->success(__('登録しました'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The schedule could not be saved. Please, try again.'));
+            $this->Flash->error(__('もう一度入力してください'));
         }
-        $users = $this->Schedules->Users->find('list', ['limit' => 200])->all();
-        $reserves = $this->Schedules->Reserves->find('list', ['limit' => 200])->all();
-        $this->set(compact('schedule', 'users', 'reserves'));
+        $this->set(compact('schedule'));
+        // $users = $this->Schedules->Users->find('list', ['limit' => 200])->all();
+        // $reserves = $this->Schedules->Reserves->find('list', ['limit' => 200])->all();
+        // $this->set(compact('schedule', 'users', 'reserves'));
     }
 
     /**

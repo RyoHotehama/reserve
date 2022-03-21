@@ -63,7 +63,7 @@ class BaseController extends AppController
     //ログアウト処理
     public function logout()
     {
-        $this->request->session()->destroy();
+        //$this->request->session()->destroy();
         return $this->redirect($this->Auth->logout());
     }
 
@@ -81,7 +81,7 @@ class BaseController extends AppController
         if ($user['role'] === 1) {
             return true;
         }
-        //一般ユーザーはfalse
+        //一般ユーザーはtrue
         if ($user['role'] === 0) {
             if ($this->name === 'Schedules'){
                 return true;

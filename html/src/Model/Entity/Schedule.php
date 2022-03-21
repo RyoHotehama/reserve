@@ -36,6 +36,7 @@ class Schedule extends Entity
         'user_id' => true,
         'reserve_id' => true,
         'schedule_date' => true,
+        'finish_date' => true,
         'title' => true,
         'body' => true,
         'created' => true,

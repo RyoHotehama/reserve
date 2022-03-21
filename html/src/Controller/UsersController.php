@@ -34,7 +34,7 @@ class UsersController extends AppController
                 ]
             ],
             'loginRedirect' => [
-                'controller' => 'Users',
+                'controller' => 'Schedules',
                 'action' => 'index'
             ],
             'logoutRedirect' => [
@@ -54,7 +54,7 @@ class UsersController extends AppController
             //Authのidentifyをユーザーに設定
             if (!empty($user)) {
                 $this->Auth->setUser($user);
-                return $this->redirect($this->Auth->redirectUrl('/schedules/'));
+                return $this->redirect($this->Auth->redirectUrl());
             }
             $this->Flash->error('メールアドレスかパスワードが間違っています');
         }
@@ -64,7 +64,7 @@ class UsersController extends AppController
     public function logout()
     {
         //セッションを破棄
-        $this->request->session()->destroy();
+        //$this->request->session()->destroy();
         return $this->redirect($this->Auth->logout());
     }
 
@@ -85,7 +85,7 @@ class UsersController extends AppController
 
         //一般ユーザーはfalse
         if ($user['role'] === 0) {
-            return false;
+            return true;
         }
 
         //他は全てfalse
