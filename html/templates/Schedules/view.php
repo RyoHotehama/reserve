@@ -20,8 +20,8 @@
     <dd><?= h(date("Y年n月j日", strtotime($schedule['finish_date'])))?></dd>
     <dt>メモ</dt>
     <dd><?= h($schedule['body']) ?></dd>
-    <a href ="<?= $this->Url->build(['controller' => 'Schedules', 'action' => 'edit', '?' => ['id' => 3]]); ?>">編集</a>
-    <a href ="<?= $this->Url->build(['controller' => 'Schedules', 'action' => 'delete', '?' => ['id' => 3]]); ?>">削除</a>
+    <a href ="<?= $this->Url->build(['controller' => 'Schedules', 'action' => 'edit', '?' => ['id' => $schedule['id']]]); ?>">編集</a>
+    <a href ="<?= $this->Url->build(['controller' => 'Schedules', 'action' => 'delete', '?' => ['id' => $schedule['id']]]); ?>">削除</a>
   </dl>
   <?php endforeach; ?>
 </div>
