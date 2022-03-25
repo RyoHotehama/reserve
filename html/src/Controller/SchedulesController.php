@@ -96,12 +96,6 @@ class SchedulesController extends BaseController
 
         $this->set(compact('prev', 'html_title', 'next', 'weeks'));
 
-        // $this->paginate = [
-        //     'contain' => ['Users', 'Reserves'],
-        // ];
-        // $schedules = $this->paginate($this->Schedules);
-
-        // $this->set(compact('schedules'));
     }
 
     /**
@@ -162,8 +156,16 @@ class SchedulesController extends BaseController
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit($id = null)
-    {
+    public function edit()
+    {   
+        //スケジュールIDを取得
+        $shedule_id = $this->request->getQuery('id');
+
+        //予定を取得
+        $schedules = $this->Schedules->find('all', ['conditions' => ['id' => $shedule_id ]]);
+
+        $this->set('schedules', $schedules->toArray());
+
         // $schedule = $this->Schedules->get($id, [
         //     'contain' => [],
         // ]);

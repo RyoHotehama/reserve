@@ -30,5 +30,6 @@
     </fieldset>
     <div class="add_button">
         <?= $this->Form->button(__('追加'), ['class' => 'button']); ?>
+        <?= $this->Form->end() ?>
     </div>
 </div>
