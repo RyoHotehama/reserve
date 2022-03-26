@@ -45,6 +45,7 @@ class UsersController extends AppController
         ]);
     }
 
+    
     //ログイン処理
     function login()
     {
