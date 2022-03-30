@@ -144,9 +144,6 @@ class SchedulesController extends BaseController
             $this->Flash->error(__('もう一度入力してください'));
         }
         $this->set(compact('schedule'));
-        // $users = $this->Schedules->Users->find('list', ['limit' => 200])->all();
-        // $reserves = $this->Schedules->Reserves->find('list', ['limit' => 200])->all();
-        // $this->set(compact('schedule', 'users', 'reserves'));
     }
 
     /**
@@ -158,29 +155,28 @@ class SchedulesController extends BaseController
      */
     public function edit()
     {   
+        date_default_timezone_set('Asia/Tokyo');
+
         //スケジュールIDを取得
         $shedule_id = $this->request->getQuery('id');
 
         //予定を取得
         $schedules = $this->Schedules->find('all', ['conditions' => ['id' => $shedule_id ]]);
+        
+        //エンティティの追加
+        $data = $this->Schedules->get($shedule_id);
 
+        if ($this->request->is('post')) {
+            $data = $this->Schedules->patchEntity($data, $this->request->getData(),);
+            if ($this->Schedules->save($data)) {
+                $this->Flash->success(__('登録しました'));
+
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('もう一度入力してください'));
+        }
+        $this->set(compact('data'));
         $this->set('schedules', $schedules->toArray());
-
-        // $schedule = $this->Schedules->get($id, [
-        //     'contain' => [],
-        // ]);
-        // if ($this->request->is(['patch', 'post', 'put'])) {
-        //     $schedule = $this->Schedules->patchEntity($schedule, $this->request->getData());
-        //     if ($this->Schedules->save($schedule)) {
-        //         $this->Flash->success(__('The schedule has been saved.'));
-
-        //         return $this->redirect(['action' => 'index']);
-        //     }
-        //     $this->Flash->error(__('The schedule could not be saved. Please, try again.'));
-        // }
-        // $users = $this->Schedules->Users->find('list', ['limit' => 200])->all();
-        // $reserves = $this->Schedules->Reserves->find('list', ['limit' => 200])->all();
-        // $this->set(compact('schedule', 'users', 'reserves'));
     }
 
     /**
@@ -190,14 +186,18 @@ class SchedulesController extends BaseController
      * @return \Cake\Http\Response|null|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete()
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $schedule = $this->Schedules->get($id);
+        //スケジュールIDを取得
+        $shedule_id = $this->request->getQuery('id');
+
+        //エンティティの取得
+        $schedule = $this->Schedules->get($shedule_id);
+        
         if ($this->Schedules->delete($schedule)) {
-            $this->Flash->success(__('The schedule has been deleted.'));
+            $this->Flash->success(__('削除しました'));
         } else {
-            $this->Flash->error(__('The schedule could not be deleted. Please, try again.'));
+            $this->Flash->error(__('削除失敗です'));
         }
 
         return $this->redirect(['action' => 'index']);

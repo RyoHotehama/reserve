@@ -7,7 +7,9 @@
 ?>
 
 <div class="edit_form">
-  <?= $this->Form->create() ?>
+  <?= $this->Form->create($data, [
+    'type' => 'post'
+  ]) ?>
   <fieldset>
     <legend>
       <?= __('編集') ?>
@@ -21,10 +23,10 @@
       <?= $this->Form->input('schedule_date', array('type' => 'datetime-local',
       'value' => date('Y-m-d\TH:i', strtotime($schedule['schedule_date'])),)); ?>
       <?= $this->Form->label('予定終了日時') ?>
-      <?= $this->Form->input('schedule_date', array('type' => 'datetime-local',
+      <?= $this->Form->input('finish_date', array('type' => 'datetime-local',
       'value' => date('Y-m-d\TH:i', strtotime($schedule['finish_date'])),)); ?>
       <?= $this->Form->label('内容') ?>
-      <?= $this->Form->input('title', array('value' => $schedule['body'],)) ?>
+      <?= $this->Form->input('body', array('value' => $schedule['body'],)) ?>
     </div>
     <div class="add_button">
     <?= $this->Form->button(__('変更'), ['class' => 'button']); ?>  
