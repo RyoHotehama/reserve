@@ -6,12 +6,12 @@
 ?>
 
 <div class="container">
+    <h3 class="text-success text-center"><?= $this->Flash->render() ?></h3>
     <h3 class="mb-4">
         <a href="?ym=<?= $prev; ?>">&lt;</a>
         <?= $html_title; ?>
         <a href="?ym=<?= $next; ?>"> &gt;</a>
-    </h3 class="text-success">
-    <h3><?= $this->Flash->render() ?></h3>
+    </h3>
     <div class="container wrap row">
         <h4 class="col">
             ようこそ<?= $authuser['name'] ?> さん

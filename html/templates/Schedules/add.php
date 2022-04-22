@@ -6,7 +6,7 @@
  */
 ?>
 
-<div class="add-form">
+<div class="add-form text-center mt-5">
     <?= $this->Form->create($schedule) ?>
     <fieldset>
         <legend>
@@ -14,23 +14,39 @@
             <?= $this->Flash->render() ?>
         </legend>
         <div class="main_form">
-            <?= $this->Form->label('タイトル') ?>
-            <?= $this->Form->input('title') ?>
-            <?= $this->Form->label('予定開始日時') ?>
-            <?= $this->Form->input('schedule_date', array(
+            <div class ="format-label">
+                <?= $this->Form->label('タイトル') ?> 
+            </div>
+            <div class ="format">
+                <?= $this->Form->input('title') ?>
+            </div>
+            <div class ="format-label">
+                <?= $this->Form->label('予定開始日時') ?>
+            </div>
+            <div class ="format">
+                <?= $this->Form->input('schedule_date', array(
                 'type' => 'datetime-local',
                 'default' => (!empty($date)) ? date('Y-m-d\TH:i', strtotime($date)): "",
-            )); ?>
-            <?= $this->Form->label('予定終了日時') ?>
-            <?= $this->Form->input('finish_date', array(
+                )); ?>
+            </div>
+            <div class ="format-label">
+                <?= $this->Form->label('予定終了日時') ?>
+            </div>
+            <div class ="format">
+                <?= $this->Form->input('finish_date', array(
                 'type' => 'datetime-local',
-            )) ?>
-            <?= $this->Form->label('内容') ?>
-            <?= $this->Form->input('body') ?>
+                )) ?>
+            </div>
+            <div class ="format-label">
+                <?= $this->Form->label('内容') ?>
+            </div>
+            <div class ="format">
+                <?= $this->Form->input('body') ?>
+            </div>
         </div>
     </fieldset>
     <div class="add_button">
-        <?= $this->Form->button(__('追加'), ['class' => 'button']); ?>
+        <?= $this->Form->button(__('追加'), ['class' => 'btn btn-primary']); ?>
         <?= $this->Form->end() ?>
     </div>
 </div>
