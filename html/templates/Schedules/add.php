@@ -19,6 +19,7 @@
             <?= $this->Form->label('予定開始日時') ?>
             <?= $this->Form->input('schedule_date', array(
                 'type' => 'datetime-local',
+                'default' => (!empty($date)) ? date('Y-m-d\TH:i', strtotime($date)): "",
             )); ?>
             <?= $this->Form->label('予定終了日時') ?>
             <?= $this->Form->input('finish_date', array(

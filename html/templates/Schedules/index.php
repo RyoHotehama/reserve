@@ -10,10 +10,16 @@
         <a href="?ym=<?= $prev; ?>">&lt;</a>
         <?= $html_title; ?>
         <a href="?ym=<?= $next; ?>"> &gt;</a>
-    </h3>
-    <h4>
-        ようこそ<?= $authuser['name'] ?> さん
-    </h4>
+    </h3 class="text-success">
+    <h3><?= $this->Flash->render() ?></h3>
+    <div class="container wrap row">
+        <h4 class="col">
+            ようこそ<?= $authuser['name'] ?> さん
+        </h4>
+        <h4 class="col schedule">
+            <a class="btn btn-primary" href="<?= $this->Url->build(['controller' => 'Schedules', 'action' => 'add'])?>" role="button">予定を追加</a>
+        </h4>
+    </div>
     <table class="table table-bordered">
         <tr>
             <th>日</th>

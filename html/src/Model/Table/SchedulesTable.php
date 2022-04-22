@@ -66,6 +66,8 @@ class SchedulesTable extends Table
      */
     public function validationDefault(Validator $validator): Validator
     {
+        $validator->setProvider('keyCustomValidation', 'App\Model\Validation\CustomValidation');
+
         $validator
             ->integer('id')
             ->allowEmptyString('id', null, 'create');
@@ -73,7 +75,11 @@ class SchedulesTable extends Table
         $validator
            // ->datetime('schedule_date')
             ->requirePresence('schedule_date', 'create')
-            ->notEmptyDate('schedule_date');
+            ->notEmptyDate('schedule_date')
+            ->add('schedule_date', 'custom', [
+                'rule' => ['isValidDate'],
+                'provider' => 'keyCustomValidation',
+            ]);
 
         $validator
             //->date('finish_date')

@@ -21,10 +21,10 @@
       <?= $this->Form->input('title', array('value' => $schedule['title'],)) ?>
       <?= $this->Form->label('予定開始日時') ?>
       <?= $this->Form->input('schedule_date', array('type' => 'datetime-local',
-      'value' => date('Y-m-d\TH:i', strtotime($schedule['schedule_date'])),)); ?>
+      'default' => date('Y-m-d\TH:i', strtotime($schedule['schedule_date'])),)); ?>
       <?= $this->Form->label('予定終了日時') ?>
       <?= $this->Form->input('finish_date', array('type' => 'datetime-local',
-      'value' => date('Y-m-d\TH:i', strtotime($schedule['finish_date'])),)); ?>
+      'default' => date('Y-m-d\TH:i', strtotime($schedule['finish_date'])),)); ?>
       <?= $this->Form->label('内容') ?>
       <?= $this->Form->input('body', array('value' => $schedule['body'],)) ?>
     </div>

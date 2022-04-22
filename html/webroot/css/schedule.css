@@ -31,3 +31,7 @@ th:nth-of-type(7), td:nth-of-type(7) {
 dl {
   border: solid 1px gray;
 }
+
+.schedule {
+  text-align: right;
+}

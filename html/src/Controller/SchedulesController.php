@@ -17,6 +17,10 @@ class SchedulesController extends BaseController
         parent::initialize();
         //レイアウトの指定
         $this-> viewBuilder()->setlayout('schedule');
+
+        //タイムゾーンを設定
+        date_default_timezone_set('Asia/Tokyo');
+
         //ユーザーの登録
         $this->set('authuser', $this->Auth->user());
     }
@@ -27,9 +31,6 @@ class SchedulesController extends BaseController
      */
     public function index()
     {
-        //タイムゾーンを設定
-        date_default_timezone_set('Asia/Tokyo');
-
         //前月・次月リンクが押された場合は、GETパラメータから年月を取得
         if (isset($_GET['ym'])) {
             $ym = $_GET['ym'];
@@ -74,9 +75,9 @@ class SchedulesController extends BaseController
         
             if ($today == $date) {
                 // 今日の日付の場合は、class="today"をつける
-                $week .= '<td class="today"><a href="/schedules/view/?id='.$date.'">' . $day;
+                $week .= '<td class="today"><a href="/schedules/view/'.$date.'">' . $day;
             } else {
-                $week .= '<td><a href="/schedules/view/?id='.$date.'">' . $day;
+                $week .= '<td><a href="/schedules/view/'.$date.'">' . $day;
             }
             $week .= '</a></td>';
             // 週終わり、または、月終わりの場合
@@ -105,22 +106,21 @@ class SchedulesController extends BaseController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view()
+    public function view($id = null)
     {
-        //日付を取得
-        $data = $this->request->getQuery('id');
         //Y年n月j日に変換
-        $date = date("Y年n月j日", strtotime($data));
+        $date = date("Y年n月j日", strtotime($id));
         //日付をY-m-d H:i:sに変換
-        $data = date("Y-m-d H:i:s", strtotime($data));
+        $data = date("Y-m-d H:i:s", strtotime($id));
         //次の日の日付を取得
-        $tomorrow = date("Y-m-d H:i:s", strtotime($data .'+1 day'));
+        $tomorrow = date("Y-m-d H:i:s", strtotime($id .'+1 day'));
 
         //予定を取得
         $schedules = $this->Schedules->find('all', ['conditions' => ['user_id' => $this->Auth->user('id'), 'schedule_date >=' => $data,'schedule_date <=' => $tomorrow]]);
 
         //取得した予定と日付をセット
         $this->set('schedules', $schedules->toArray());
+        $this->set('today', $id);
         $this->set(compact('date'));
     }
 
@@ -131,7 +131,7 @@ class SchedulesController extends BaseController
      */
     public function add()
     {
-        date_default_timezone_set('Asia/Tokyo');
+        $date = $this->request->getQuery('date');
         $schedule = $this->Schedules->newEmptyEntity();
         if ($this->request->is('post')) {
             $schedule = $this->Schedules->patchEntity($schedule, $this->request->getData(),);
@@ -143,7 +143,7 @@ class SchedulesController extends BaseController
             }
             $this->Flash->error(__('もう一度入力してください'));
         }
-        $this->set(compact('schedule'));
+        $this->set(compact('schedule','date'));
     }
 
     /**
@@ -154,9 +154,7 @@ class SchedulesController extends BaseController
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function edit()
-    {   
-        date_default_timezone_set('Asia/Tokyo');
-
+    {
         //スケジュールIDを取得
         $shedule_id = $this->request->getQuery('id');
 
