@@ -167,7 +167,7 @@ class SchedulesController extends BaseController
         if ($this->request->is('post')) {
             $data = $this->Schedules->patchEntity($data, $this->request->getData(),);
             if ($this->Schedules->save($data)) {
-                $this->Flash->success(__('登録しました'));
+                $this->Flash->success(__('変更しました'));
 
                 return $this->redirect(['action' => 'index']);
             }

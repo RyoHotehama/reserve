@@ -5,7 +5,6 @@ namespace App\Controller;
 
 
 use Cake\Auth\DefaultPasswordHasher;
-use Cake\Event\EventInterface;
 /**
  * Users Controller
  *
@@ -63,15 +62,7 @@ class BaseController extends AppController
     //ログアウト処理
     public function logout()
     {
-        //$this->request->session()->destroy();
         return $this->redirect($this->Auth->logout());
-    }
-
-    //認証ページを使わないページの設定
-    public function beforeFilter(EventInterface $event)
-    {
-        parent::beforeFilter($event);
-        $this->Auth->allow([]);
     }
 
     //認証時のロールチェック

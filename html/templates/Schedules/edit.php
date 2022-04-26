@@ -28,14 +28,14 @@
       </div>
       <div class ="format">
       <?= $this->Form->input('schedule_date', array('type' => 'datetime-local',
-      'default' => date('Y-m-d\TH:i', strtotime($schedule['schedule_date'])),)); ?>
+      'value' => date('Y-m-d\TH:i', strtotime($schedule['schedule_date'])),)); ?>
       </div>
       <div class ="format-label">
       <?= $this->Form->label('予定終了日時') ?>
       </div>
       <div class ="format">
       <?= $this->Form->input('finish_date', array('type' => 'datetime-local',
-      'default' => date('Y-m-d\TH:i', strtotime($schedule['finish_date'])),)); ?>
+      'value' => date('Y-m-d\TH:i', strtotime($schedule['finish_date'])),)); ?>
       </div>
       <div class ="format-label">
       <?= $this->Form->label('内容') ?>

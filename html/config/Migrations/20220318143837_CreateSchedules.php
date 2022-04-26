@@ -20,11 +20,6 @@ class CreateSchedules extends AbstractMigration
             'limit' => 11,
             'null' => false,
         ]);
-        $table->addColumn('reserve_id', 'integer', [
-            'default' => null,
-            'limit' => 11,
-            'null' => true,
-        ]);
 
         $table->addColumn('schedule_date', 'datetime', [
             'default' => null,
@@ -51,11 +46,6 @@ class CreateSchedules extends AbstractMigration
         ]);
         $table->addColumn('updated', 'datetime', [
             'default' => null,
-            'null' => false,
-        ]);
-        $table->addColumn('delflg', 'integer', [
-            'default' => 0,
-            'limit' => 11,
             'null' => false,
         ]);
         $table->create();

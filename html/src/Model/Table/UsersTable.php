@@ -48,9 +48,6 @@ class UsersTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->hasMany('Reserve', [
-            'foreignKey' => 'user_id',
-        ]);
         $this->hasMany('Schedules', [
             'foreignKey' => 'user_id',
         ]);

@@ -64,8 +64,6 @@ class UsersController extends AppController
     //ログアウト処理
     public function logout()
     {
-        //セッションを破棄
-        //$this->request->session()->destroy();
         return $this->redirect($this->Auth->logout());
     }
 
@@ -73,7 +71,7 @@ class UsersController extends AppController
     public function beforeFilter(EventInterface $event)
     {
         parent::beforeFilter($event);
-        $this->Auth->allow(['login']);
+        $this->Auth->allow(['login', 'add']);
     }
 
     //認証時のロールチェック
@@ -115,7 +113,7 @@ class UsersController extends AppController
     public function view($id = null)
     {
         $user = $this->Users->get($id, [
-            'contain' => ['Reserve', 'Schedules'],
+            'contain' => ['Schedules'],
         ]);
 
         $this->set(compact('user'));

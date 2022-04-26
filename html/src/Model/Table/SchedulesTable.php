@@ -52,10 +52,6 @@ class SchedulesTable extends Table
             'foreignKey' => 'user_id',
             'joinType' => 'INNER',
         ]);
-        $this->belongsTo('Reserve', [
-            'foreignKey' => 'reserve_id',
-            'joinType' => 'INNER',
-        ]);
     }
 
     /**
@@ -73,7 +69,6 @@ class SchedulesTable extends Table
             ->allowEmptyString('id', null, 'create');
 
         $validator
-           // ->datetime('schedule_date')
             ->requirePresence('schedule_date', 'create')
             ->notEmptyDate('schedule_date')
             ->add('schedule_date', 'custom', [
@@ -82,10 +77,8 @@ class SchedulesTable extends Table
             ]);
 
         $validator
-            //->date('finish_date')
             ->requirePresence('finish_date', 'create')
             ->notEmptyDate('finish_date');
-
 
         $validator
             ->scalar('title')
@@ -97,8 +90,6 @@ class SchedulesTable extends Table
             ->scalar('body')
             ->allowEmptyString('body');
 
-        $validator
-            ->integer('delflg');
         return $validator;
     }
 
@@ -112,7 +103,6 @@ class SchedulesTable extends Table
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn('user_id', 'Users'), ['errorField' => 'user_id']);
-        //$rules->add($rules->existsIn('reserve_id', 'Reserve'), ['errorField' => 'reserve_id']);
 
         return $rules;
     }
