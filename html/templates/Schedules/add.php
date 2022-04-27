@@ -38,7 +38,7 @@
                 )) ?>
             </div>
             <div class ="format-label">
-                <?= $this->Form->label('内容') ?>
+                <?= $this->Form->label('メモ') ?>
             </div>
             <div class ="format">
                 <?= $this->Form->input('body') ?>

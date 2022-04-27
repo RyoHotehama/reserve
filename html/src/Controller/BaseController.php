@@ -40,7 +40,6 @@ class BaseController extends AppController
                 'controller' => 'Users',
                 'action' => 'login'
             ],
-            'authError' => 'ログインしてください'
         ]);
     }
 

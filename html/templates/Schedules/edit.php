@@ -7,7 +7,7 @@
 ?>
 
 <div class="edit_form text-center mt-5">
-  <?= $this->Form->create($data, [
+  <?= $this->Form->create($schedule, [
     'type' => 'post'
   ]) ?>
   <fieldset>
@@ -21,7 +21,7 @@
         <?= $this->Form->label('タイトル') ?>
       </div>
       <div class ="format">
-      <?= $this->Form->input('title', array('value' => $schedule['title'],)) ?>
+      <?= $this->Form->input('title') ?>
       </div>
       <div class ="format-label">
       <?= $this->Form->label('予定開始日時') ?>
@@ -38,10 +38,10 @@
       'value' => date('Y-m-d\TH:i', strtotime($schedule['finish_date'])),)); ?>
       </div>
       <div class ="format-label">
-      <?= $this->Form->label('内容') ?>
+      <?= $this->Form->label('メモ') ?>
       </div>
       <div class ="format">
-      <?= $this->Form->input('body', array('value' => $schedule['body'],)) ?>
+      <?= $this->Form->input('body') ?>
       </div>
     </div>
     <div class="add_button">

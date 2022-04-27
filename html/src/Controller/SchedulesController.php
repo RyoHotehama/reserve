@@ -131,8 +131,12 @@ class SchedulesController extends BaseController
      */
     public function add()
     {
+        //日付の取得
         $date = $this->request->getQuery('date');
+
+        //エンティティの追加
         $schedule = $this->Schedules->newEmptyEntity();
+
         if ($this->request->is('post')) {
             $schedule = $this->Schedules->patchEntity($schedule, $this->request->getData(),);
             $schedule->user_id = $this->Auth->user('id');
@@ -161,19 +165,19 @@ class SchedulesController extends BaseController
         //予定を取得
         $schedules = $this->Schedules->find('all', ['conditions' => ['id' => $shedule_id ]]);
         
-        //エンティティの追加
-        $data = $this->Schedules->get($shedule_id);
+        //エンティティの取得
+        $schedule = $this->Schedules->get($shedule_id);
 
         if ($this->request->is('post')) {
-            $data = $this->Schedules->patchEntity($data, $this->request->getData(),);
-            if ($this->Schedules->save($data)) {
+            $schedule = $this->Schedules->patchEntity($schedule, $this->request->getData());
+            if ($this->Schedules->save($schedule)) {
                 $this->Flash->success(__('変更しました'));
 
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('もう一度入力してください'));
         }
-        $this->set(compact('data'));
+        $this->set(compact('schedule'));
         $this->set('schedules', $schedules->toArray());
     }
 
