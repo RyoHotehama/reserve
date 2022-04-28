@@ -1,0 +1,45 @@
+a {
+  text-decoration: none;
+}
+
+th {
+  height: 30px;
+  text-align: center;
+}
+
+td {
+  height: 100px;
+}
+
+.today {
+  background: orange !important;
+}
+
+th:nth-of-type(1), td:nth-of-type(1) {
+  color: red;
+}
+
+th:nth-of-type(7), td:nth-of-type(7) {
+  color: blue;
+}
+
+.view {
+  margin: 0 auto;
+  width: 50%;
+}
+
+dl {
+  border: solid 1px gray;
+}
+
+.schedule {
+  text-align: right;
+}
+
+.format {
+  margin-bottom: 1%;
+}
+
+.btn-wrap {
+  text-align: right;
+}

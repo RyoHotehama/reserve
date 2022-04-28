@@ -1,0 +1,25 @@
+.user {
+  text-align: right;
+}
+
+.main_form {
+  display:flex;
+  flex-flow: column;
+  width: 50%;
+  margin: 0 auto;
+}
+
+button {
+  margin: 1rem auto;
+  
+}
+
+.login {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.message {
+  color: red;
+  text-align: center;
+}
