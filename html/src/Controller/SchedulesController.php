@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use APP\Controller\AppController;
+use Cake\Chronos\Date;
+
 /**
  * Schedules Controller
  *
@@ -65,6 +67,8 @@ class SchedulesController extends BaseController
         $weeks = [];
         $week = '';
 
+
+
         // 第１週目：空のセルを追加
         // 例）１日が火曜日だった場合、日・月曜日の２つ分の空セルを追加する
         $week .= str_repeat('<td></td>', $youbi);
@@ -75,11 +79,30 @@ class SchedulesController extends BaseController
         
             if ($today == $date) {
                 // 今日の日付の場合は、class="today"をつける
-                $week .= '<td class="today"><a href="/schedules/view/'.$date.'">' . $day;
+                $week .= '<td class="today"><a href="/schedules/view/'.$date.'">' . $day .'</a>';
             } else {
-                $week .= '<td><a href="/schedules/view/'.$date.'">' . $day;
+                $week .= '<td><a href="/schedules/view/'.$date.'">' . $day .'</a>';
             }
-            $week .= '</a></td>';
+
+            //スケジュールの取得・配置
+            $schedules = $this->Schedules->find('all', ['conditions' => ['user_id' => $this->Auth->user('id')]]);
+            $schedules = $schedules->toArray();
+            foreach($schedules as $schedule) {
+                $schedule_date = $schedule['schedule_date']->format('Y-m-d');
+                $str = substr($schedule_date, 8, 1);
+                if ($str == 0) {
+                    $day1 = mb_substr($schedule_date, 0, 8);
+                    $day2 = mb_substr($schedule_date, -1);
+                    $schedule_date = $day1 .$day2;
+                }
+                if ($schedule_date == $date) {
+                    $week .= '<p><a href ="/schedules/edit/?id='.$schedule['id'] .'">' .$schedule['title'];
+                    $schedule_date = $schedule['schedule_date']->format('H:i:s');
+                    $week .= $schedule_date .'~' .'</a></p>';
+                }
+            }
+
+            $week .= '</td>';
             // 週終わり、または、月終わりの場合
             if ($youbi % 7 == 6 || $day == $day_count) {
         
